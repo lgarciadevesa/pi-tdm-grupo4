@@ -39,9 +39,6 @@ class FormLogin extends Component {
 
     const usersStorage = localStorage.getItem("users");
 
-
-    // Si no existen usuarios guardados
-
     if (usersStorage === null) {
 
       this.setState({
@@ -51,20 +48,12 @@ class FormLogin extends Component {
       return;
     }
 
-
-    // Convertimos users nuevamente a array
-
     let usersParseado = JSON.parse(usersStorage);
-
-
-    // Buscamos el usuario por email
 
     let usersFiltrado = usersParseado.filter(
       usuario => usuario.email === this.state.email
     );
 
-
-    // Si el email no existe
 
     if (usersFiltrado.length === 0) {
 
@@ -76,8 +65,6 @@ class FormLogin extends Component {
     }
 
 
-    // Si la contraseña no coincide
-
     if (usersFiltrado[0].password !== this.state.password) {
 
       this.setState({
@@ -87,21 +74,14 @@ class FormLogin extends Component {
       return;
     }
 
-
-    // Si todo salió bien, creamos cookie
-
     cookies.set(
       "auth-user",
       usersFiltrado[0].email
     );
 
-
-    // Redirigimos al Home
-
     this.props.history.push("/");
 
   }
-
 
   render() {
 
@@ -141,11 +121,9 @@ class FormLogin extends Component {
 
             </div>
 
-
             <p className="text-danger">
               {this.state.error}
             </p>
-
 
             <button
               type="submit"
