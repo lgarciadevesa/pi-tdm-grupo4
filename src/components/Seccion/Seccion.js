@@ -1,9 +1,15 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../Card/Card';
 
 function Seccion(props) {
   return (
     <div>
       <h2 className={'alert ' + props.color}>{props.titulo}</h2>
+
+      <Link to={props.rutaVerTodas} className="btn btn-outline-primary mb-3">
+        Ver todas
+      </Link>
       <section className="row cards">
         {props.items.map((item) => (
           <Card
