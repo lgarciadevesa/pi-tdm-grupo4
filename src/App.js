@@ -7,6 +7,7 @@ import Series from './pages/Series/Series';
 import Detalle from './pages/Detalle/Detalle';
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
+import NotFound from './components/NotFound/NotFound';
 
   
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/detalle/serie/:id" component={Detalle} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
+        <Route path="*" component={NotFound} />
       </Switch>
       <Footer />
     </div>
