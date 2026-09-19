@@ -7,7 +7,8 @@ class Detalle extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      detalle: null
+      detalle: null,
+      esFavorito: false
     };
   }
 
@@ -25,66 +26,115 @@ class Detalle extends Component {
         });
       })
       .catch(err => console.log(err));
+  
+
+  let storage = JSON.parse(localStorage.getItem('favoritos'));
+if (storage !== null) {
+  let estaEnFavoritos = storage.includes(id);
+  this.setState({
+    esFavorito: estaEnFavoritos
+  });
+}
+
   }
 
-  render() {
-    if (this.state.detalle === null) {
-      return (
-        <div className="text-center my-5">
-          <p>Cargando...</p>
-        </div>
-      );
-    }
+agregarFav() {
+  const id = this.props.match.params.id;
+  let storage = JSON.parse(localStorage.getItem('favoritos'));
 
-    const { detalle } = this.state;
-    const esPelicula = this.props.match.path === '/detalle/pelicula/:id';
-    const tieneSesion = cookies.get('user-auth-cookie');
+  if (storage !== null) {
+    storage.push(id);
+    let storageString = JSON.stringify(storage);
+    localStorage.setItem('favoritos', storageString);
+  } else {
+    let storageInicial = [id];
+    let storageString = JSON.stringify(storageInicial);
+    localStorage.setItem('favoritos', storageString);
+  }
 
+  this.setState({
+    esFavorito: true
+  });
+}
+
+sacarFav() {
+  const id = this.props.match.params.id;
+  let storage = JSON.parse(localStorage.getItem('favoritos'));
+  let storageFiltrado = storage.filter(favId => favId !== id);
+  let storageString = JSON.stringify(storageFiltrado);
+  localStorage.setItem('favoritos', storageString);
+
+  this.setState({
+    esFavorito: false
+  });
+}
+
+render() {
+  if (this.state.detalle === null) {
     return (
-      <main className="container my-4">
-        <div className="row">
-          <div className="col-md-4 mb-3">
-            <img
-              src={'https://image.tmdb.org/t/p/w342' + detalle.poster_path}
-              className="img-fluid rounded shadow-sm"
-              alt={detalle.title || detalle.name}
-            />
-          </div>
-
-          <div className="col-md-8">
-            <h2>{detalle.title || detalle.name}</h2>
-
-            <p><strong>Calificación (Rating):</strong> {detalle.vote_average} / 10</p>
-
-            <p>
-              <strong>Fecha de estreno:</strong> {detalle.release_date || detalle.first_air_date}
-            </p>
-
-            {esPelicula ? (
-              <p><strong>Duración:</strong> {detalle.runtime} minutos</p>
-            ) : null}
-
-            <p><strong>Sinópsis:</strong> {detalle.overview}</p>
-
-            <div>
-              <strong>Géneros:</strong>
-              <ul>
-                {detalle.genres ? detalle.genres.map((g, idx) => (
-                  <li key={g.id || idx}>{g.name}</li>
-                )) : null}
-              </ul>
-            </div>
-
-            {tieneSesion ? (
-              <button className="btn btn-outline-danger mt-2">
-                Agregar a favoritos
-              </button>
-            ) : null}
-          </div>
-        </div>
-      </main>
+      <div className="text-center my-5">
+        <p>Cargando...</p>
+      </div>
     );
   }
+
+  const detalle = this.state.detalle;
+  const esPelicula = this.props.match.path === '/detalle/pelicula/:id';
+  const tieneSesion = cookies.get('user-auth-cookie');
+
+  return (
+    <main className="container my-4">
+      <div className="row">
+        <div className="col-md-4 mb-3">
+          <img
+            src={'https://image.tmdb.org/t/p/w342' + detalle.poster_path}
+            className="img-fluid rounded shadow-sm"
+            alt={esPelicula ? detalle.title : detalle.name}
+          />
+        </div>
+
+        <div className="col-md-8">
+          <h2>{esPelicula ? detalle.title : detalle.name}</h2>
+
+          <p><strong>Calificación (Rating):</strong> {detalle.vote_average} / 10</p>
+
+          <p>
+            <strong>Fecha de estreno:</strong> {esPelicula ? detalle.release_date : detalle.first_air_date}
+          </p>
+
+          {esPelicula ? (
+            <p><strong>Duración:</strong> {detalle.runtime} minutos</p>
+          ) : null}
+
+          <p><strong>Sinópsis:</strong> {detalle.overview}</p>
+
+          <div>
+            <strong>Géneros:</strong>
+            <ul>
+              {detalle.genres ? detalle.genres.map((g, idx) => (
+                <li key={idx}>{g.name}</li>
+              )) : null}
+            </ul>
+          </div>
+
+          {tieneSesion ? (
+            this.state.esFavorito ? (
+              <button className="btn btn-outline-danger mt-2" onClick={() => this.sacarFav()}>
+                Sacar de favoritos
+              </button>
+            ) : (
+
+             
+              <button className = "btn btn-outline-danger mt-2" onClick = {() => this.agregarFav()}>
+          Agregar a favoritos
+        </button>
+        )
+            ) : null}
+      </div>
+    </div>
+      </main >
+    );
+}
 }
 
 export default Detalle;

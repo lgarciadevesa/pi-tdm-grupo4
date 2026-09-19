@@ -8,8 +8,19 @@ class Card extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      abierto: false
+      abierto: false,
+      esFavorito: false
     };
+  }
+
+  componentDidMount() {
+    let storage = JSON.parse(localStorage.getItem('favoritos'));
+    if (storage !== null) {
+      let estaEnFavoritos = storage.includes(this.props.id);
+      this.setState({
+        esFavorito: estaEnFavoritos
+      });
+    }
   }
 
   verDescripcion() {
@@ -17,6 +28,36 @@ class Card extends Component {
       abierto: !this.state.abierto
     });
   }
+
+  agregarFav() {
+    let storage = JSON.parse(localStorage.getItem('favoritos'));
+
+    if (storage !== null) {
+      storage.push(this.props.id);
+      let storageString = JSON.stringify(storage);
+      localStorage.setItem('favoritos', storageString);
+    } else {
+      let storageInicial = [this.props.id];
+      let storageString = JSON.stringify(storageInicial);
+      localStorage.setItem('favoritos', storageString);
+    }
+
+    this.setState({
+      esFavorito: true
+    });
+  }
+
+  sacarFav() {
+    let storage = JSON.parse(localStorage.getItem('favoritos'));
+    let storageFiltrado = storage.filter(id => id !== this.props.id);
+    let storageString = JSON.stringify(storageFiltrado);
+    localStorage.setItem('favoritos', storageString);
+
+    this.setState({
+      esFavorito: false
+    });
+  }
+
 
   render() {
     const tieneSesion = cookies.get('user-auth-cookie');
@@ -26,7 +67,7 @@ class Card extends Component {
       <article className={this.props.clase}>
         <img src={this.props.imagen} className="card-img-top" alt={this.props.titulo} />
         <div className="cardBody">
-          <p className="card-title">{this.props.titulo}</p>
+          <h5 className="card-title">{this.props.titulo}</h5>
           {this.state.abierto ? (
             <p className="card-text">{this.props.descripcion}</p>
           ) : null}
@@ -37,9 +78,15 @@ class Card extends Component {
             Ir a detalle
           </Link>
           {tieneSesion ? (
-            <button className="btn btn-outline-danger btn-sm mb-1">
-              Agregar a favoritos
-            </button>
+            this.state.esFavorito ? (
+              <button className="btn btn-outline-danger btn-sm mb-1" onClick={() => this.sacarFav()}>
+                Sacar de favoritos
+              </button>
+            ) : (
+              <button className="btn btn-outline-danger btn-sm mb-1" onClick={() => this.agregarFav()}>
+                Agregar a favoritos
+              </button>
+            )
           ) : null}
         </div>
       </article>

@@ -20,7 +20,7 @@ class Home extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({
-          peliculas: data.results.slice(0, 4)
+          peliculas: data.results.filter((item, idx) => idx < 4)
         });
       })
       .catch(err => console.log(err));
@@ -30,7 +30,7 @@ class Home extends Component {
       .then(res => res.json())
       .then(data => {
         this.setState({
-          series: data.results.slice(0, 4)
+          series: data.results.filter((item, idx) => idx < 4)
         });
       })
       .catch(err => console.log(err));
@@ -54,7 +54,7 @@ class Home extends Component {
           titulo="Series populares"
           color="alert-warning"
           tipo="serie"
-          clase="single-card-movie"
+          clase="single-card-tv"
           items={this.state.series}
           rutaVerTodas="/series"
         />

@@ -25,7 +25,7 @@ class Buscador extends Component {
   buscar(event) {
     event.preventDefault();
 
-    if (this.state.query.trim() === '') {
+    if (this.state.query === '') {
       return;
     }
 

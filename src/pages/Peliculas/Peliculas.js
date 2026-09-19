@@ -50,9 +50,9 @@ class Peliculas extends Component {
 
     return (
       <main>
-        <h2>Todas las Películas Populares</h2>
+        <h2 className="alert alert-primary">Todas las Películas Populares</h2>
 
-        <form className="mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
+        <form className="filter-form px-0 mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
           <input
             type="text"
             className="form-control"
@@ -62,7 +62,7 @@ class Peliculas extends Component {
           />
         </form>
 
-        <section className="row cards">
+        <section className="row cards all-movies" id="movies">
           {peliculasFiltradas.map(item => (
             <Card
               key={item.id}
@@ -77,7 +77,7 @@ class Peliculas extends Component {
         </section>
 
         <div className="text-center my-4">
-          <button className="btn btn-primary" onClick={() => this.cargarMas()}>
+          <button className="btn btn-info mb-3" onClick={() => this.cargarMas()}>
             Cargar más
           </button>
         </div>

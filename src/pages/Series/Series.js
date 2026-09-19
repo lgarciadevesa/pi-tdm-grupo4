@@ -50,9 +50,9 @@ class Series extends Component {
 
     return (
       <main>
-        <h2>Todas las Series Populares</h2>
+        <h2 className="alert alert-warning">Todas las Series Populares</h2>
 
-        <form className="mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
+        <form className="filter-form px-0 mb-3" onSubmit={(event) => this.evitarSubmit(event)}>
           <input
             type="text"
             className="form-control"
@@ -62,7 +62,7 @@ class Series extends Component {
           />
         </form>
 
-        <section className="row cards">
+        <section className="row cards all-series" id="series">
           {seriesFiltradas.map(item => (
             <Card
               key={item.id}
@@ -71,13 +71,13 @@ class Series extends Component {
               titulo={item.name}
               imagen={'https://image.tmdb.org/t/p/w342' + item.poster_path}
               descripcion={item.overview}
-              clase="single-card-movie"
+              clase="single-card-tv"
             />
           ))}
         </section>
 
         <div className="text-center my-4">
-          <button className="btn btn-primary" onClick={() => this.cargarMas()}>
+          <button className="btn btn-warning mb-3" onClick={() => this.cargarMas()}>
             Cargar más
           </button>
         </div>
