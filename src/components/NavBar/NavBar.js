@@ -1,13 +1,18 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, withRouter } from "react-router-dom";
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
 
-function NavBar() {
+function NavBar(props) {
 
   const tieneSesion = cookies.get('user-auth-cookie');
+
+  function cerrarSesion() {
+    cookies.remove('user-auth-cookie', { path: '/' });
+    props.history.push('/login');
+  }
 
   return (
     <header>
@@ -25,11 +30,19 @@ function NavBar() {
           </li>
 
           {tieneSesion ? (
-            <li className="nav-item">
-
-              <Link className="nav-link" to="/favoritos">Favoritas</Link>
-            </li>
-
+            <React.Fragment>
+              <li className="nav-item">
+                <Link className="nav-link" to="/favoritos">Favoritas</Link>
+              </li>
+              <li className="nav-item ml-auto">
+                <button
+                  className="btn btn-outline-danger btn-sm mt-2"
+                  onClick={() => cerrarSesion()}
+                >
+                  Cerrar sesión
+                </button>
+              </li>
+            </React.Fragment>
           ) : (
             <React.Fragment>
               <li className="nav-item ml-auto">
@@ -47,4 +60,4 @@ function NavBar() {
 }
 
 
-export default NavBar;
+export default withRouter(NavBar);
