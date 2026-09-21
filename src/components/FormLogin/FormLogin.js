@@ -73,8 +73,9 @@ class FormLogin extends Component {
     }
 
     cookies.set(
-      "auth-user",
-      usersFiltrado[0].email
+      "user-auth-cookie",
+      usersFiltrado[0].email,
+      { path: '/' }
     );
 
     this.props.history.push("/");

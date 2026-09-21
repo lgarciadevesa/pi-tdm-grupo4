@@ -29,7 +29,7 @@ class Buscador extends Component {
       return;
     }
 
-    this.props.history.push('/');
+    this.props.history.push('/buscar/' + this.state.tipo + '/' + this.state.query);
     this.setState({ query: '' });
   }
 
