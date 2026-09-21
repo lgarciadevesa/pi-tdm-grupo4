@@ -14,7 +14,15 @@ class Card extends Component {
   }
 
   componentDidMount() {
-    let storage = JSON.parse(localStorage.getItem('favoritos'));
+    let recuperoStorage;
+
+    if (this.props.tipo === "pelicula") {
+      recuperoStorage = localStorage.getItem("favoritosPeliculas");
+    } else {
+      recuperoStorage = localStorage.getItem("favoritosSeries");
+    }
+
+    let storage = JSON.parse(recuperoStorage);
     if (storage !== null) {
       let estaEnFavoritos = storage.includes(this.props.id);
       this.setState({
@@ -24,22 +32,37 @@ class Card extends Component {
   }
 
   verDescripcion() {
-    this.setState({
-      abierto: !this.state.abierto
-    });
+    if (this.state.abierto === false) {
+      this.setState({
+        abierto: true
+      });
+    } else {
+      this.setState({
+        abierto: false
+      });
+    }
   }
 
   agregarFav() {
-    let storage = JSON.parse(localStorage.getItem('favoritos'));
+    let clave;
+
+    if (this.props.tipo === "pelicula") {
+      clave = "favoritosPeliculas";
+    } else {
+      clave = "favoritosSeries";
+    }
+
+    let recuperoStorage = localStorage.getItem(clave);
+    let storage = JSON.parse(recuperoStorage);
 
     if (storage !== null) {
       storage.push(this.props.id);
       let storageString = JSON.stringify(storage);
-      localStorage.setItem('favoritos', storageString);
+      localStorage.setItem(clave, storageString);
     } else {
       let storageInicial = [this.props.id];
       let storageString = JSON.stringify(storageInicial);
-      localStorage.setItem('favoritos', storageString);
+      localStorage.setItem(clave, storageString);
     }
 
     this.setState({
@@ -48,10 +71,19 @@ class Card extends Component {
   }
 
   sacarFav() {
-    let storage = JSON.parse(localStorage.getItem('favoritos'));
+    let clave;
+
+    if (this.props.tipo === "pelicula") {
+      clave = "favoritosPeliculas";
+    } else {
+      clave = "favoritosSeries";
+    }
+
+    let recuperoStorage = localStorage.getItem(clave);
+    let storage = JSON.parse(recuperoStorage);
     let storageFiltrado = storage.filter(id => id !== this.props.id);
     let storageString = JSON.stringify(storageFiltrado);
-    localStorage.setItem('favoritos', storageString);
+    localStorage.setItem(clave, storageString);
 
     this.setState({
       esFavorito: false
@@ -61,6 +93,40 @@ class Card extends Component {
 
   render() {
     const tieneSesion = cookies.get('user-auth-cookie');
+
+    let botonFavorito;
+
+    if (tieneSesion) {
+
+      if (this.state.esFavorito === true) {
+
+        botonFavorito = (
+          <button
+            className="btn btn-outline-danger btn-sm mb-1"
+            onClick={() => this.sacarFav()}
+          >
+            Sacar de favoritos
+          </button>
+        );
+
+      } else {
+
+        botonFavorito = (
+          <button
+            className="btn btn-outline-danger btn-sm mb-1"
+            onClick={() => this.agregarFav()}
+          >
+            Agregar a favoritos
+          </button>
+        );
+
+      }
+
+    } else {
+
+      botonFavorito = null;
+
+    }
 
 
     return (
@@ -77,17 +143,7 @@ class Card extends Component {
           <Link to={'/detalle/' + this.props.tipo + '/' + this.props.id} className="btn btn-primary btn-sm mb-1">
             Ir a detalle
           </Link>
-          {tieneSesion ? (
-            this.state.esFavorito ? (
-              <button className="btn btn-outline-danger btn-sm mb-1" onClick={() => this.sacarFav()}>
-                Sacar de favoritos
-              </button>
-            ) : (
-              <button className="btn btn-outline-danger btn-sm mb-1" onClick={() => this.agregarFav()}>
-                Agregar a favoritos
-              </button>
-            )
-          ) : null}
+          {botonFavorito}
         </div>
       </article>
     );

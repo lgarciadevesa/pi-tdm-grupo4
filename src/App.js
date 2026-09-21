@@ -9,6 +9,7 @@ import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import NotFound from './components/NotFound/NotFound';
 import SearchResult from './pages/SearchResult/SearchResult';
+import Favoritos from './pages/Favoritos/Favoritos';
 
   
 function App() {
@@ -23,7 +24,8 @@ function App() {
         <Route path="/detalle/serie/:id" component={Detalle} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-         <Route path="/buscar/:tipo/:query" component={SearchResult} />
+        <Route path="/buscar/:tipo/:query" component={SearchResult} />
+        <Route path="/favoritos" component={Favoritos}/>
         <Route path="*" component={NotFound} />
       </Switch>
       <Footer />
