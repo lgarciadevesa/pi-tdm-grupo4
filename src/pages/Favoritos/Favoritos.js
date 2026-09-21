@@ -173,7 +173,7 @@ render() {
         Películas favoritas
       </h2>
 
-      <section className="card-container">
+      <section className="row cards">
         {contenidoPeliculas}
       </section>
 
@@ -182,7 +182,7 @@ render() {
         Series favoritas
       </h2>
 
-      <section className="card-container">
+      <section className="row cards">
         {contenidoSeries}
       </section>
 

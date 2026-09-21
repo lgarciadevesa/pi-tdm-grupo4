@@ -1,21 +1,5 @@
-nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    background-color: #eee;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-.nav {
-    margin: 0 !important;
-}
-.nav a{
-    color: #444;
-    text-decoration: none;
-}
-.nav a:hover{
-    font-weight: bold;
-}
-.search-form, .filter-form {
+
+.filter-form {
     padding: .5rem 0;
     margin-bottom: 20px;
     display: grid;
@@ -25,11 +9,7 @@ nav {
 .filter-form {
     grid-template-columns: 1fr;
 }
-.search-form .btn-sm{
-    line-height: 1;
-    font-size: 0.9rem;
-}
-.search-form input,
+
 .filter-form input {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -42,40 +22,18 @@ nav {
 .filter-form input {
     line-height: 1.5;
 }
-.cards {
-    padding: 0.75rem 1.25rem;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 2%;
-}
-.cardBody {
-    margin-top: 20px;
-}
-.single-card-people {
-    width: 19%;
-}
-.single-card-movie {
-    width: 24%;
-}
-.single-card-playing {
-    width: 15%;
-}
+
+
 #now-playing .card-text{
     height: 100px;
     overflow: hidden;
 }
-.single-card-tv {
-    width: 19%;
-}
+
 .tv-show .card-text{
     height: 100px;
     overflow: hidden;
 }
-.single-card-on-air{
-    width: 15%;
-}
+
 #on-air-today .card-text{
     height: 100px;
     overflow: hidden;
@@ -85,52 +43,12 @@ nav {
     width: 15%;
 }
 
-@media(min-width: 765px){
-    nav {
-        grid-template-columns: 1fr;
-    }
-}
 /* --- Ajustes propios sobre la maqueta --- */
 
 /* El buscador ahora tiene input + selector de tipo + botón */
-.search-form {
-    grid-template-columns: 5fr 1fr 1fr;
-}
-.search-form select {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
+
 
 /* Responsive: en pantallas chicas las tarjetas ocupan más ancho */
-@media (max-width: 764px) {
-    .single-card-movie,
-    .single-card-playing,
-    .single-card-tv,
-    .single-card-on-air,
-    .all-movies .single-card-movie {
-        width: 48%;
-        margin-bottom: 1rem;
-    }
-    .search-form {
-        grid-template-columns: 1fr;
-        row-gap: 5px;
-    }
-}
-@media (max-width: 480px) {
-    .single-card-movie,
-    .single-card-playing,
-    .single-card-tv,
-    .single-card-on-air,
-    .all-movies .single-card-movie {
-        width: 100%;
-    }
-}
+
 
 /* Títulos de sección: el botón "Ver todas" queda alineado a la derecha sin salirse del recuadro */
-h2.alert {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
