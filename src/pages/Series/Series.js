@@ -44,6 +44,16 @@ class Series extends Component {
   }
 
   render() {
+
+    if (this.state.series.length === 0) {
+      return (
+        <main>
+          <div className="text-center my-5">
+            <p>Cargando...</p>
+          </div>
+        </main>
+      );
+    }
     const seriesFiltradas = this.state.series.filter(item =>
       item.name.toLowerCase().includes(this.state.textoFiltro.toLowerCase())
     );

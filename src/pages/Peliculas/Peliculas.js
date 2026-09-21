@@ -44,6 +44,16 @@ class Peliculas extends Component {
   }
 
   render() {
+
+    if (this.state.peliculas.length === 0) {
+      return (
+        <main>
+          <div className="text-center my-5">
+            <p>Cargando...</p>
+          </div>
+        </main>
+      );
+    }
     const peliculasFiltradas = this.state.peliculas.filter(item =>
       item.title.toLowerCase().includes(this.state.textoFiltro.toLowerCase())
     );

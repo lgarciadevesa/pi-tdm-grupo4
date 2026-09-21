@@ -37,6 +37,19 @@ class Home extends Component {
   }
 
   render() {
+
+    if (
+      this.state.peliculas.length === 0 ||
+      this.state.series.length === 0
+    ) {
+      return (
+        <main>
+          <div className="text-center my-5">
+            <p>Cargando...</p>
+          </div>
+        </main>
+      );
+    }
     return (
       <main>
         <Buscador />
