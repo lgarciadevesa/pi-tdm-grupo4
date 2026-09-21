@@ -16,14 +16,12 @@ class FormLogin extends Component {
     };
   }
 
-
   controlarEmail(event) {
     this.setState({
       email: event.target.value,
       error: ""
     });
   }
-
 
   controlarPassword(event) {
     this.setState({
