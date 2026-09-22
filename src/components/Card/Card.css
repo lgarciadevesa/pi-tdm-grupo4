@@ -50,10 +50,6 @@
     }
 }
 
-.all-movies .single-card-movie {
-    width: 15%;
-}
-
 #now-playing .card-text {
     height: 100px;
     overflow: hidden;

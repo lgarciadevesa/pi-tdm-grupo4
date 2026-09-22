@@ -1,54 +1,17 @@
-
 .filter-form {
     padding: .5rem 0;
     margin-bottom: 20px;
     display: grid;
-    grid-template-columns: 5fr 1fr;
-    column-gap: 5px;
-}
-.filter-form {
     grid-template-columns: 1fr;
+    column-gap: 5px;
 }
 
 .filter-form input {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding-top: 3px;
-    vertical-align: middle;
-    line-height: 1;
-    font-size: 1rem;
     padding-bottom: 4px;
-}
-.filter-form input {
+    vertical-align: middle;
     line-height: 1.5;
+    font-size: 1rem;
 }
-
-
-#now-playing .card-text{
-    height: 100px;
-    overflow: hidden;
-}
-
-.tv-show .card-text{
-    height: 100px;
-    overflow: hidden;
-}
-
-#on-air-today .card-text{
-    height: 100px;
-    overflow: hidden;
-}
-
-.all-movies .single-card-movie {
-    width: 15%;
-}
-
-/* --- Ajustes propios sobre la maqueta --- */
-
-/* El buscador ahora tiene input + selector de tipo + botón */
-
-
-/* Responsive: en pantallas chicas las tarjetas ocupan más ancho */
-
-
-/* Títulos de sección: el botón "Ver todas" queda alineado a la derecha sin salirse del recuadro */

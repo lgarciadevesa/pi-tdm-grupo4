@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Card from '../../components/Card/Card';
+import Buscador from '../../components/Buscador/Buscador';
 
 class SearchResult extends Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class SearchResult extends Component {
 
     return (
       <main>
+        <Buscador/>
         <h2 className={'alert ' + (esPelicula ? 'alert-primary' : 'alert-warning')}>
           Resultados para "{query}" ({this.state.resultados.length})
         </h2>

@@ -160,7 +160,7 @@ render() {
         descripcion={serie.overview}
         imagen={'https://image.tmdb.org/t/p/w342' + serie.poster_path}
         tipo="serie"
-        clase="single-card-movie"
+        clase="single-card-tv"
       />
 
     ));
