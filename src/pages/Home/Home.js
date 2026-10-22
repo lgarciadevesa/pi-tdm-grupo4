@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
 import Buscador from '../../components/Buscador/Buscador';
 import Seccion from '../../components/Seccion/Seccion';
+import { useState, useEffect } from 'react';
 
-
-class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      peliculas: [],
-      series: []
-    };
-  }
-
-  componentDidMount() {
+function Home() {
+  const [peliculas, setPeliculas] = useState([]);
+  const [series, setSeries] = useState([]);
+ 
+useEffect(() => {
     const apiKey = '6b6cb210c82c48fac559ee907885a2e9';
 
     // Películas populares
     fetch('https://api.themoviedb.org/3/movie/popular?api_key=' + apiKey)
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          peliculas: data.results.filter((item, idx) => idx < 4)
-        });
+        setPeliculas(data.results.filter((item, idx) => idx < 4));
       })
       .catch(err => console.log(err));
 
@@ -29,18 +22,15 @@ class Home extends Component {
     fetch('https://api.themoviedb.org/3/tv/popular?api_key=' + apiKey)
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          series: data.results.filter((item, idx) => idx < 4)
-        });
+        setSeries(data.results.filter((item, idx) => idx < 4));
       })
       .catch(err => console.log(err));
-  }
+  })
 
-  render() {
 
     if (
-      this.state.peliculas.length === 0 ||
-      this.state.series.length === 0
+      peliculas.length === 0 ||
+      series.length === 0
     ) {
       return (
         <main>
@@ -59,7 +49,7 @@ class Home extends Component {
           color="alert-primary"
           tipo="pelicula"
           clase="single-card-movie"
-          items={this.state.peliculas}
+          items={peliculas}
           rutaVerTodas="/peliculas"
         />
 
@@ -68,12 +58,12 @@ class Home extends Component {
           color="alert-warning"
           tipo="serie"
           clase="single-card-tv"
-          items={this.state.series}
+          items={series}
           rutaVerTodas="/series"
         />
       </main>
     );
-  }
+  
 }
 
 
