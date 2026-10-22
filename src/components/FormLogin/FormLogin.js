@@ -1,37 +1,24 @@
-import React, { Component } from "react";
+import { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-class FormLogin extends Component {
+function FormLogin(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: "",
-      password: "",
-      error: ""
-    };
+  function controlarEmail(event) {
+    setEmail(event.target.value);
+    setError("");
   }
 
-  controlarEmail(event) {
-    this.setState({
-      email: event.target.value,
-      error: ""
-    });
-  }
+  function controlarPassword(event) {
+    setPassword(event.target.value);
+    setError(""); }
 
-  controlarPassword(event) {
-    this.setState({
-      password: event.target.value,
-      error: ""
-    });
-  }
-
-
-  onSubmit(event) {
+  function onSubmit(event) {
 
     event.preventDefault();
 
@@ -39,9 +26,7 @@ class FormLogin extends Component {
 
     if (usersStorage === null) {
 
-      this.setState({
-        error: "Credenciales incorrectas"
-      });
+      setError("Credenciales incorrectas");
 
       return;
     }
@@ -49,25 +34,19 @@ class FormLogin extends Component {
     let usersParseado = JSON.parse(usersStorage);
 
     let usersFiltrado = usersParseado.filter(
-      usuario => usuario.email === this.state.email
+      usuario => usuario.email === email
     );
-
 
     if (usersFiltrado.length === 0) {
 
-      this.setState({
-        error: "Credenciales incorrectas"
-      });
+      setError("Credenciales incorrectas");
 
       return;
     }
 
+    if (usersFiltrado[0].password !== password) {
 
-    if (usersFiltrado[0].password !== this.state.password) {
-
-      this.setState({
-        error: "Credenciales incorrectas"
-      });
+      setError("Credenciales incorrectas");
 
       return;
     }
@@ -78,66 +57,61 @@ class FormLogin extends Component {
       { path: '/' }
     );
 
-    this.props.history.push("/");
+    props.history.push("/"); }
 
-  }
+  return (
+    <div className="row justify-content-center">
 
-  render() {
+      <div className="col-md-6">
 
-    return (
-      <div className="row justify-content-center">
+        <form onSubmit={(event) => onSubmit(event)}>
 
-        <div className="col-md-6">
+          <div className="form-group">
 
-          <form onSubmit={(event) => this.onSubmit(event)}>
+            <label>Email</label>
 
-            <div className="form-group">
+            <input
+              type="text"
+              className="form-control"
+              value={email}
+              onChange={(event) => controlarEmail(event)}
+              placeholder="Ingresá tu email"
+            />
 
-              <label>Email</label>
-
-              <input
-                type="text"
-                className="form-control"
-                value={this.state.email}
-                onChange={(event) => this.controlarEmail(event)}
-                placeholder="Ingresá tu email"
-              />
-
-            </div>
+          </div>
 
 
-            <div className="form-group">
+          <div className="form-group">
 
-              <label>Contraseña</label>
+            <label>Contraseña</label>
 
-              <input
-                type="password"
-                className="form-control"
-                value={this.state.password}
-                onChange={(event) => this.controlarPassword(event)}
-                placeholder="Ingresá tu contraseña"
-              />
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(event) => controlarPassword(event)}
+              placeholder="Ingresá tu contraseña"
+            />
 
-            </div>
+          </div>
 
-            <p className="text-danger">
-              {this.state.error}
-            </p>
+          <p className="text-danger">
+            {error}
+          </p>
 
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-            >
-              Ingresar
-            </button>
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+          >
+            Ingresar
+          </button>
 
-          </form>
-
-        </div>
+        </form>
 
       </div>
-    );
-  }
+
+    </div>
+  );
 }
 
 export default withRouter(FormLogin);
