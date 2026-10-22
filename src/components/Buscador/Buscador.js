@@ -7,15 +7,15 @@ function Buscador(props) {
   const [query, setQuery] = useState('');
   const [tipo, setTipo] = useState('pelicula');
 
-  const cambiarQuery = (event) => {
+  function cambiarQuery(event) {
     setQuery(event.target.value);
-  };
+  }
 
-  const cambiarTipo = (event) => {
+  function cambiarTipo(event) {
     setTipo(event.target.value);
-  };
+  }
 
-  const buscar = (event) => {
+  function buscar(event) {
     event.preventDefault();
 
     if (query === '') {

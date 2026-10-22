@@ -1,62 +1,44 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 
-class FormRegister extends Component {
+function FormRegister(props) {
 
-  constructor(props) {
-    super(props);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-    this.state = {
-      email: "",
-      password: "",
-      error: ""
-    };
+  function controlarEmail(event) {
+    setEmail(event.target.value);
+    setError("");
   }
 
-
-  controlarEmail(event) {
-    this.setState({
-      email: event.target.value,
-      error: ""
-    });
+  function controlarPassword(event) {
+    setPassword(event.target.value);
+    setError("");
   }
 
-
-  controlarPassword(event) {
-    this.setState({
-      password: event.target.value,
-      error: ""
-    });
-  }
-
-
-  onSubmit(event) {
+  function onSubmit(event) {
 
     event.preventDefault();
 
-
     let usuarioACrear = {
-      email: this.state.email,
-      password: this.state.password,
+      email: email,
+      password: password,
       createdAt: Date.now()
     };
 
-    
-    if (this.state.email.includes("@") === false) {
 
-    this.setState({
-        error: "email mal formateado"
-    });
+    if (email.includes("@") === false) {
 
-    return;
+      setError("email mal formateado");
+
+      return;
     }
 
 
-    if (this.state.password.length < 6) {
+    if (password.length < 6) {
 
-      this.setState({
-        error: "La contraseña debe tener al menos 6 caracteres"
-      });
+      setError("La contraseña debe tener al menos 6 caracteres");
 
       return;
     }
@@ -70,15 +52,13 @@ class FormRegister extends Component {
       let usersParseado = JSON.parse(usersStorage);
 
       let usersFiltrado = usersParseado.filter(
-        usuario => usuario.email === this.state.email
+        usuario => usuario.email === email
       );
 
 
       if (usersFiltrado.length > 0) {
 
-        this.setState({
-          error: "El email ya está en uso"
-        });
+        setError("El email ya está en uso");
 
         return;
 
@@ -103,78 +83,76 @@ class FormRegister extends Component {
 
     }
 
-
-    this.props.history.push("/login");
+    props.history.push("/login");
 
   }
 
+  return (
 
-  render() {
+    <div className="row justify-content-center">
 
-    return (
-      <div className="row justify-content-center">
+      <div className="col-md-6">
 
-        <div className="col-md-6">
+        <form onSubmit={(event) => onSubmit(event)}>
 
-          <form onSubmit={(event) => this.onSubmit(event)}>
+          <div className="form-group">
 
-            <div className="form-group">
-
-              <label>Email</label>
+            <label>Email</label>
 
             <input
-            type="text"
-            className="form-control"
-            value={this.state.email}
-            onChange={(event) => this.controlarEmail(event)}
-            placeholder="Ingresá tu email"
+              type="text"
+              className="form-control"
+              value={email}
+              onChange={(event) => controlarEmail(event)}
+              placeholder="Ingresá tu email"
             />
 
-            </div>
+          </div>
 
 
-            <div className="form-group">
+          <div className="form-group">
 
-              <label>Contraseña</label>
+            <label>Contraseña</label>
 
-              <input
-                type="password"
-                className="form-control"
-                value={this.state.password}
-                onChange={(event) => this.controlarPassword(event)}
-                placeholder="Ingresá tu contraseña"
-              />
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(event) => controlarPassword(event)}
+              placeholder="Ingresá tu contraseña"
+            />
 
-            </div>
-
-
-            <p className="text-danger">
-              {this.state.error}
-            </p>
+          </div>
 
 
-            <button
-              type="submit"
-              className="btn btn-primary btn-block"
-            >
-              Registrarse
-            </button>
-
-          </form>
-
-
-          <p className="mt-3 text-center">
-            ¿Ya tenés cuenta?{" "}
-            <a href="/login">
-              Iniciar sesión
-            </a>
+          <p className="text-danger">
+            {error}
           </p>
 
-        </div>
+
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+          >
+            Registrarse
+          </button>
+
+        </form>
+
+
+        <p className="mt-3 text-center">
+          ¿Ya tenés cuenta?{" "}
+          <a href="/login">
+            Iniciar sesión
+          </a>
+        </p>
 
       </div>
-    );
-  }
+
+    </div>
+
+  );
+
 }
 
 export default withRouter(FormRegister);
