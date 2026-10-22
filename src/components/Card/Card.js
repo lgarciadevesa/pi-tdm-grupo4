@@ -1,23 +1,18 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import './Card.css';
 
 const cookies = new Cookies();
 
-class Card extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      abierto: false,
-      esFavorito: false
-    };
-  }
+function Card(props) {
+  const [abierto, setAbierto] = useState(false);
+  const [esFavorito, setEsFavorito] = useState(false);
 
-  componentDidMount() {
+  useEffect(() => {
     let recuperoStorage;
 
-    if (this.props.tipo === "pelicula") {
+    if (props.tipo === "pelicula") {
       recuperoStorage = localStorage.getItem("favoritosPeliculas");
     } else {
       recuperoStorage = localStorage.getItem("favoritosSeries");
@@ -25,29 +20,23 @@ class Card extends Component {
 
     let storage = JSON.parse(recuperoStorage);
     if (storage !== null) {
-      let estaEnFavoritos = storage.includes(this.props.id);
-      this.setState({
-        esFavorito: estaEnFavoritos
-      });
+      let estaEnFavoritos = storage.includes(props.id);
+      setEsFavorito(estaEnFavoritos);
     }
-  }
+  }, []);
 
-  verDescripcion() {
-    if (this.state.abierto === false) {
-      this.setState({
-        abierto: true
-      });
+  function verDescripcion() {
+    if (abierto === false) {
+      setAbierto(true);
     } else {
-      this.setState({
-        abierto: false
-      });
+      setAbierto(false);
     }
   }
 
-  agregarFav() {
+  function agregarFav() {
     let clave;
 
-    if (this.props.tipo === "pelicula") {
+    if (props.tipo === "pelicula") {
       clave = "favoritosPeliculas";
     } else {
       clave = "favoritosSeries";
@@ -57,24 +46,22 @@ class Card extends Component {
     let storage = JSON.parse(recuperoStorage);
 
     if (storage !== null) {
-      storage.push(this.props.id);
+      storage.push(props.id);
       let storageString = JSON.stringify(storage);
       localStorage.setItem(clave, storageString);
     } else {
-      let storageInicial = [this.props.id];
+      let storageInicial = [props.id];
       let storageString = JSON.stringify(storageInicial);
       localStorage.setItem(clave, storageString);
     }
 
-    this.setState({
-      esFavorito: true
-    });
+    setEsFavorito(true);
   }
 
-  sacarFav() {
+  function sacarFav() {
     let clave;
 
-    if (this.props.tipo === "pelicula") {
+    if (props.tipo === "pelicula") {
       clave = "favoritosPeliculas";
     } else {
       clave = "favoritosSeries";
@@ -82,73 +69,68 @@ class Card extends Component {
 
     let recuperoStorage = localStorage.getItem(clave);
     let storage = JSON.parse(recuperoStorage);
-    let storageFiltrado = storage.filter(id => id !== this.props.id);
+    let storageFiltrado = storage.filter(id => id !== props.id);
     let storageString = JSON.stringify(storageFiltrado);
     localStorage.setItem(clave, storageString);
 
-    this.setState({
-      esFavorito: false
-    });
+    setEsFavorito(false);
   }
 
+  const tieneSesion = cookies.get('user-auth-cookie');
 
-  render() {
-    const tieneSesion = cookies.get('user-auth-cookie');
+  let botonFavorito;
 
-    let botonFavorito;
+  if (tieneSesion) {
 
-    if (tieneSesion) {
+    if (esFavorito === true) {
 
-      if (this.state.esFavorito === true) {
-
-        botonFavorito = (
-          <button
-            className="btn btn-outline-danger btn-sm mb-1"
-            onClick={() => this.sacarFav()}
-          >
-            Sacar de favoritos
-          </button>
-        );
-
-      } else {
-
-        botonFavorito = (
-          <button
-            className="btn btn-outline-danger btn-sm mb-1"
-            onClick={() => this.agregarFav()}
-          >
-            Agregar a favoritos
-          </button>
-        );
-
-      }
+      botonFavorito = (
+        <button
+          className="btn btn-outline-danger btn-sm mb-1"
+          onClick={() => sacarFav()}
+        >
+          Sacar de favoritos
+        </button>
+      );
 
     } else {
 
-      botonFavorito = null;
+      botonFavorito = (
+        <button
+          className="btn btn-outline-danger btn-sm mb-1"
+          onClick={() => agregarFav()}
+        >
+          Agregar a favoritos
+        </button>
+      );
 
     }
 
+  } else {
 
-    return (
-      <article className={this.props.clase}>
-        <img src={this.props.imagen} className="card-img-top" alt={this.props.titulo} />
-        <div className="cardBody">
-          <h5 className="card-title">{this.props.titulo}</h5>
-          {this.state.abierto ? (
-            <p className="card-text">{this.props.descripcion}</p>
-          ) : null}
-          <button className="btn btn-secondary btn-sm mr-1 mb-1" onClick={() => this.verDescripcion()}>
-            {this.state.abierto ? 'Ocultar descripción' : 'Ver descripción'}
-          </button>
-          <Link to={'/detalle/' + this.props.tipo + '/' + this.props.id} className="btn btn-primary btn-sm mb-1">
-            Ir a detalle
-          </Link>
-          {botonFavorito}
-        </div>
-      </article>
-    );
+    botonFavorito = null;
+
   }
+
+
+  return (
+    <article className={props.clase}>
+      <img src={props.imagen} className="card-img-top" alt={props.titulo} />
+      <div className="cardBody">
+        <h5 className="card-title">{props.titulo}</h5>
+        {abierto ? (
+          <p className="card-text">{props.descripcion}</p>
+        ) : null}
+        <button className="btn btn-secondary btn-sm mr-1 mb-1" onClick={() => verDescripcion()}>
+          {abierto ? 'Ocultar descripción' : 'Ver descripción'}
+        </button>
+        <Link to={'/detalle/' + props.tipo + '/' + props.id} className="btn btn-primary btn-sm mb-1">
+          Ir a detalle
+        </Link>
+        {botonFavorito}
+      </div>
+    </article>
+  );
 }
 
 export default Card;
