@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import FormLogin from "../../components/FormLogin/FormLogin.js";
 
-class Login extends Component {
+function Login() {
 
-  render() {
     return (
       <main>
 
@@ -15,7 +14,7 @@ class Login extends Component {
 
       </main>
     );
-  }
+
 }
 
 export default Login;

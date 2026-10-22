@@ -1,56 +1,46 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import "./Buscador.css";
+import { useState, useEffect } from 'react';
 
-class Buscador extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      query: '',
-      tipo: 'pelicula'
-    };
-  }
+function Buscador(props) { 
+  const [query, setQuery] = useState('');
+  const [tipo, setTipo] = useState('pelicula');
 
-  cambiarQuery(event) {
-    this.setState({
-      query: event.target.value
-    });
-  }
+  const cambiarQuery = (event) => {
+    setQuery(event.target.value);
+  };
 
-  cambiarTipo(event) {
-    this.setState({
-      tipo: event.target.value
-    });
-  }
+  const cambiarTipo = (event) => {
+    setTipo(event.target.value);
+  };
 
-  buscar(event) {
+  const buscar = (event) => {
     event.preventDefault();
 
-    if (this.state.query === '') {
+    if (query === '') {
       return;
     }
 
-    this.props.history.push('/buscar/' + this.state.tipo + '/' + this.state.query);
-    this.setState({ query: '' });
-  }
+    props.history.push('/buscar/' + tipo + '/' + query);
+    setQuery('');
+  };
 
-  render() {
-    return (
-      <form className="search-form" onSubmit={(event) => this.buscar(event)}>
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={this.state.query}
-          onChange={(event) => this.cambiarQuery(event)}
-        />
-        <select value={this.state.tipo} onChange={(event) => this.cambiarTipo(event)}>
-          <option value="pelicula">Películas</option>
-          <option value="serie">Series</option>
-        </select>
-        <button type="submit" className="btn btn-success btn-sm">Buscar</button>
-      </form>
-    );
-  }
+  return (
+    <form className="search-form" onSubmit={buscar}>
+      <input
+        type="text"
+        placeholder="Buscar..."
+        value={query}
+        onChange={cambiarQuery}
+      />
+      <select value={tipo} onChange={cambiarTipo}>
+        <option value="pelicula">Películas</option>
+        <option value="serie">Series</option>
+      </select>
+      <button type="submit" className="btn btn-success btn-sm">Buscar</button>
+    </form>
+  );
 }
 
 export default withRouter(Buscador);

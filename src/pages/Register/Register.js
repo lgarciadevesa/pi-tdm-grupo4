@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import FormRegister from "../../components/FormRegister/FormRegister";
 
-class Register extends Component {
+function Register() {
 
-  render() {
     return (
       <main>
 
@@ -15,7 +14,7 @@ class Register extends Component {
 
       </main>
     );
-  }
+  
 }
 
 export default Register;
